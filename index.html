@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>たくちゃんの赤いサンショウウオ：てんかん重積の森を越えろ！</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif; /* 可愛らしいフォント */
+            background-color: #fce7f3; /* 桜色のような優しい背景 */
+            color: #333;
+            line-height: 1.6;
+        }
+        .game-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 25px; /* より丸みを帯びた角 */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* 強めの影 */
+        }
+        .question-area {
+            min-height: 150px;
+            background-color: #e0f2fe; /* 薄い青 */
+            border: 3px dashed #ef4444; /* 赤い点線ボーダー */
+            border-radius: 20px;
+            padding: 25px;
+        }
+         .answer-choices button {
+            background-color: #a7f3d0; /* 薄い緑のボタン */
+            color: #065f46;
+            font-weight: 600;
+            padding: 14px 25px; /* ボタンを大きく */
+            border-radius: 15px; /* 丸みを帯びたボタン */
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .answer-choices button:hover {
+            background-color: #6ee7b7; /* ホバーで濃い緑 */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        .answer-choices button:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+        }
+         .answer-choices button.bg-green-500 {
+            background-color: #34d399; /* 正解時の緑 */
+             color: white;
+        }
+        .answer-choices button.bg-red-500 {
+            background-color: #f87171; /* 不正解時の赤 */
+             color: white;
+        }
+
+        .feedback-area {
+            min-height: 200px;
+            background-color: #bfdbfe; /* 薄い水色 */
+            border-left: 8px solid #ef4444; /* 強調された赤い左ボーダー */
+            border-radius: 20px;
+            padding: 25px;
+        }
+        .character-dialogue {
+            font-style: italic;
+            color: #881337; /* 赤系の文字色 */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fecaca; /* 薄い赤系の背景 */
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .character-dialogue img {
+            width: 100px; /* キャラクター画像を大きく */
+            height: 100px;
+            border-radius: 50%;
+            margin-right: 20px;
+            border: 4px solid #dc2626; /* 赤いボーダー */
+            object-fit: cover;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e2e8f0;
+            border-radius: 9999px;
+            margin-top: 25px;
+            height: 25px; /* バーをさらに太く */
+            overflow: hidden;
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            height: 100%;
+            background-image: linear-gradient(to right, #ef4444, #fca5a5); /* 赤系のグラデーション */
+            border-radius: 9999px;
+            transition: width 0.5s ease-in-out;
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+            line-height: 25px;
+            font-weight: bold;
+        }
+        .xp-level {
+            margin-top: 15px;
+            font-size: 1.1rem;
+            text-align: right;
+            color: #4b5563;
+            font-weight: 700;
+        }
+        #game-intro button,
+        #game-end button {
+            background-color: #f97316; /* オレンジ系のボタン */
+            color: white;
+            font-weight: bold;
+            padding: 15px 30px; /* ボタンをさらに大きく */
+            border-radius: 15px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+             transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+         #game-intro button:hover,
+        #game-end button:hover {
+             background-color: #ea580c; /* ホバーで濃いオレンジ */
+             transform: translateY(-3px);
+             box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+         #game-intro button:active,
+        #game-end button:active {
+             transform: translateY(0);
+             box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        #game-end .bg-yellow-500 { /* 復習モードボタン */
+             background-color: #facc15;
+             color: #854d0e;
+        }
+         #game-end .bg-yellow-500:hover {
+             background-color: #eab308;
+             color: #713f12;
+        }
+         #game-end .bg-blue-500 { /* もう一度挑戦ボタン */
+             background-color: #3b82f6;
+             color: white;
+        }
+         #game-end .bg-blue-500:hover {
+             background-color: #2563eb;
+        }
+
+
+        #story-intro {
+            background-color: #fef3c7; /* 薄い黄色 */
+            border-left-color: #fbbf24; /* 黄色のボーダー */
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        #incorrect-answers-summary {
+            background-color: #fee2e2; /* 薄い赤 */
+            border-left-color: #ef4444; /* 赤のボーダー */
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        h1, h2, h3, h4 {
+            color: #881337; /* 見出しの色を赤系に */
+        }
+        #game-title-image {
+            display: block;
+            margin: 0 auto 25px; /* マージンを増やす */
+            max-width: 95%; /* 少し大きく */
+            height: auto;
+            border-radius: 20px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+    </style>
+</head>
+<body class="p-4">
+    <div class="game-container">
+        <h1 class="text-3xl font-bold text-center mb-6">たくちゃんの赤いサンショウウオ：てんかん重積の森を越えろ！</h1>
+        <img id="game-title-image" src="uploaded:DALL·E 2025-03-23 01.21.54 - A magical river scene in a forest where a young Japanese boy (Taku) and a red giant salamander swim toward a glowing underwater door. The door is anci.jpg-96d2822e-09a7-47b1-81b5-ad8e2e39363c" alt="ゲームタイトル画像" onerror="this.onerror=null;this.src='https://placehold.co/600x180/cccccc/333333?text=タイトル画像';">
+
+        <div id="game-intro">
+            <p class="mb-4">研修医のたくちゃん、君は日々の忙しさに追われる中で、ある日、不思議な赤いサンショウウオに出会った。そのサンショウウオは、小児科の奥深い知識が隠された「てんかん重積の森」への道を示している。さあ、サンショウウオの導きに従い、森の奥に潜む様々な「医療の試練」に立ち向かい、小児のてんかん重積状態に関する真の知識と自信を手に入れよう！</p>
+            <p class="mb-4 text-center">冒険を開始するには、下のボタンをクリックしてください。</p>
+            <button id="start-game-btn" class="block mx-auto">冒険を開始する</button>
+        </div>
+
+        <div id="game-area" class="hidden">
+            <div id="story-intro" class="mb-6">
+                </div>
+
+            <div class="progress-bar-container">
+                <div id="progress-bar" class="progress-bar" style="width: 0%;">0%</div>
+            </div>
+            <div id="xp-level" class="xp-level">XP: 0 | レベル: 1 | 称号: 見習い研修医</div>
+
+            <div id="question-display" class="mb-6 question-area">
+                <h2 id="question-text" class="text-xl font-semibold mb-4"></h2>
+                <div id="answer-choices" class="flex flex-col space-y-3">
+                    </div>
+            </div>
+
+            <div id="feedback-display" class="hidden mb-6 feedback-area">
+                <h3 id="feedback-title" class="text-2xl font-semibold mb-3"></h3>
+                <p id="feedback-text" class="mb-4"></p>
+                <div id="supplementary-learning">
+                    <h4 class="font-semibold mt-3 text-lg">補足学習ポイント:</h4>
+                    <ul id="supplementary-list" class="list-disc list-inside ml-4 space-y-1">
+                        </ul>
+                </div>
+                <button id="next-question-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md mt-4">次の試練へ</button>
+            </div>
+
+            <div id="character-dialogue" class="character-dialogue">
+                <img id="character-image" src="uploaded:ChatGPT Image 2025年4月1日 20_53_30.jpg-38da21c3-7db7-4593-89ba-de119af3cfba" alt="赤いサンショウウオ" class="hidden" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/333333?text=サンショウウオ';">
+                <span id="character-text"></span>
+            </div>
+        </div>
+
+        <div id="game-end" class="hidden text-center">
+            <h2 class="text-3xl font-bold mb-4">冒険終了！</h2>
+            <p id="final-score" class="text-lg mb-2"></p>
+            <p id="final-xp-level" class="text-lg mb-4"></p>
+            <div id="badges-earned" class="mb-6">
+                <h3 class="text-2xl font-semibold mb-3">獲得したバッジ:</h3>
+                <ul id="badge-list" class="list-none p-0 space-y-1">
+                    </ul>
+            </div>
+            <div id="incorrect-answers-summary" class="mb-6 text-left">
+                <h3 class="text-2xl font-semibold mb-3">弱点フィードバック:</h3>
+                <p id="weakness-feedback" class="mb-3"></p>
+                <ul id="incorrect-list" class="list-disc list-inside ml-4 space-y-2">
+                    </ul>
+            </div>
+            <div class="flex justify-center space-x-4">
+                 <button id="review-mode-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg shadow-md">復習モード</button>
+                 <button id="restart-game-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md">もう一度挑戦する</button>
+            </div>
+            <div class="mt-6 text-sm text-gray-600">
+                 <label for="shuffle-questions" class="mr-2">問題順をシャッフル:</label>
+                 <input type="checkbox" id="shuffle-questions" class="mr-4 accent-blue-500">
+                 <label for="shuffle-choices" class="mr-2">選択肢順をシャッフル:</label>
+                 <input type="checkbox" id="shuffle-choices" class="accent-blue-500">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // キャラクター画像URL（アップロードされた画像を使用）
+        const characterImages = {
+            "赤いサンショウウオ": "uploaded:ChatGPT Image 2025年4月1日 20_53_30.jpg-38da21c3-7db7-4593-89ba-de119af3cfba"
+        };
+
+        // ゲームデータ（問題、回答、フィードバック）
+        const gameData = [
+            {
+                chapter: "始まりの森のささやき：定義と病態の理解",
+                character: "赤いサンショウウオ",
+                story: "研修医のたくちゃん、緑豊かな「始まりの森」に足を踏み入れたね。ここが「てんかん重積の森」の入り口だ。まずは、この森の基本的なルール、つまり「てんかん重積状態」の定義と病態を学んでいこう。",
+                questions: [
+                    {
+                        text: "国際抗てんかん連盟（ILAE）が提唱したてんかん重積状態の新しい定義において、強直間代けいれん性SEで「この時間を超えると発作が自然停止しにくい時間（t1）」として設定されているのは何分ですか？",
+                        choices: ["1分", "5分", "10分", "30分"],
+                        answer: "5分",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は 5分 だよ。たくちゃん、もう一度よく見てみよう。",
+                        supplementary: [
+                            "**時間こそ脳 (Time is brain):** 痙攣重積状態では、発作が長く続くほど脳へのダメージが大きくなるんだ。t1とt2という時間指標は、迅速な対応の重要性を示しているよ。",
+                            "**t1とt2:** t1は治療を開始すべき目安の時間、t2は神経後遺症のリスクが高まる時間だ。強直間代けいれん性SEではt1=5分、t2=30分だよ。他の発作型ではこれらの時間が異なるから注意してね（例：焦点性意識障害を伴う部分発作SEではt1~10分、t2~60分）。",
+                            "**比喩:** 痙攣重積状態は、まるでブレーキが効かなくなった暴走列車のようなものだ。t1の時点で早期に介入（非常ブレーキをかける）しないと、t2の時点では脱線（神経後遺症）のリスクが非常に高くなってしまうんだ。"
+                        ]
+                    },
+                    {
+                        text: "外見上は明らかな全身性のけいれんを伴わないが、意識障害や軽度の自動症が見られるてんかん重積状態は何と呼ばれますか？",
+                        choices: ["けいれん性SE", "非けいれん性SE", "微小発作SE", "焦点性意識障害発作重積"],
+                        answer: "非けいれん性SE",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は 非けいれん性SE だよ。見逃しやすいから気をつけようね。",
+                        supplementary: [
+                            "**非けいれん性SE:** けいれんが見られないため見逃されやすいが、脳波上は発作が続いており、脳に持続的な負荷がかかっているんだ。隠れた敵を見つけるようなものだね。",
+                            "**微小発作SE:** 全身けいれん性SEが長時間続いた後に、けいれんが目立たなくなる状態だ。これも非けいれん性SEの一種とみなされ、治療継続が必要だよ。"
+                        ]
+                    }
+                ]
+            },
+            {
+                chapter: "緊急の川の急流：初期対応の迅速さ",
+                character: "赤いサンショウウオ",
+                story: "たくちゃん、ここは「緊急の川の急流」だ。流れは速く、一刻を争う状況が多い。ここでは、患者さんの命を守るための迅速な初期対応が求められるぞ。",
+                questions: [
+                     {
+                        text: "小児の痙攣重積状態における初期対応の基本となるA~G評価で、最も優先される「A」は何を指しますか？",
+                        choices: ["意識レベル (Awareness)", "気道確保 (Airway)", "呼吸 (Breathing)", "循環 (Circulation)"],
+                        answer: "気道確保 (Airway)",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は 気道確保 (Airway) だよ。呼吸の道を開くことが一番大事だ。",
+                        supplementary: [
+                            "**A-G評価:** 救命措置の基本中の基本だ。A(気道確保) -> B(呼吸) -> C(循環) -> D(神経学的評価/障害) -> E(体温/全身観察) -> F(情報収集) -> G(治療開始) の順に進めるんだ。",
+                            "**気道確保の重要性:** 痙攣中は舌根沈下や誤嚥のリスクが高く、気道確保が最優先だ。これにより呼吸と酸素化を確保するんだ。まるで、詰まった水道管を直すようなものだね。"
+                        ]
+                    },
+                    {
+                        text: "初期対応の「D: Disability」において、特に迅速な確認と対応が求められる可逆的な原因は何ですか？",
+                        choices: ["高体温", "低血圧", "低血糖", "電解質異常"],
+                        answer: "低血糖",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は 低血糖 だよ。すぐにエネルギーを補給してあげよう。",
+                        supplementary: [
+                            "**Dextroseを忘れるな:** Dの評価では、迅速な血糖測定が非常に重要だ。低血糖は痙攣の原因となり、ブドウ糖投与で速やかに改善する可能性があるんだ。",
+                            "**小児の低血糖リスク:** 小児は代謝予備能が低いから、長時間の痙攣で低血糖に陥りやすいんだ。まるで、電池切れで動かなくなるおもちゃのようなものだね。"
+                        ]
+                    }
+                ]
+            },
+            {
+                chapter: "薬草洞窟の輝き：薬物療法の知識",
+                character: "赤いサンショウウオ",
+                story: "たくちゃん、ここは「薬草洞窟の輝き」だ。ここでは、てんかん重積状態に用いられる様々な魔法の薬草、つまり薬剤の秘密を学ぶことができるぞ。",
+                questions: [
+                    {
+                        text: "痙攣重積状態の薬物療法において、発作開始後5分以内の投与が理想とされる第一選択薬の薬剤クラスは何ですか？",
+                        choices: ["バルビツール酸系", "フェニトイン系", "ベンゾジアゼピン系", "レベチラセタム"],
+                        answer: "ベンゾジアゼピン系",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は ベンゾジアゼピン系 だよ。最初の魔法の呪文だ。",
+                        supplementary: [
+                            "**ベンゾジアゼピン系:** GABA_A受容体に作用し、脳の過剰な興奮を迅速に抑えるんだ。ジアゼパム、ミダゾラム、ロラゼパムなどがあるよ。",
+                            "**早期投与の重要性:** 発作開始からベンゾジアゼピン投与までの時間遅延が、予後悪化や難治化のリスクを高めると報告されているんだ。魔法は早く唱えるほど効果があるんだね。"
+                        ]
+                    },
+                    {
+                        text: "長時間の発作持続により、神経細胞膜上のGABA_A受容体が減少し、ベンゾジアゼピン系薬の効果が低下する現象は何と呼ばれますか？",
+                        choices: ["タキフィラキシー（耐性）", "感受性亢進", "受容体アップレギュレーション", "代謝促進"],
+                        answer: "タキフィラキシー（耐性）",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は タキフィラキシー（耐性） だよ。同じ魔法ばかりだと効き目が悪くなるんだ。",
+                        supplementary: [
+                            "**タキフィラキシー:** 薬剤を繰り返し投与したり、長時間作用させたりすることで効果が減弱する現象だ。ベンゾジアゼピン系薬で起こりやすく、難治性SEの原因の一つなんだ。",
+                            "**受容体変化:** 長時間の発作により、抑制性のGABA_A受容体が細胞内に取り込まれ（内在化）、興奮性のNMDA受容体が細胞膜上に増えることが報告されているんだ。これが薬剤耐性に関与するんだよ。まるで、鍵穴（受容体）が隠れてしまったり、違う鍵穴が増えてしまったりするようなものだね。"
+                        ]
+                    },
+                    {
+                        text: "ベンゾジアゼピン抵抗性の確立したSE（established SE）に対する第二選択薬として、シナプス小胞タンパクSV2Aに結合し、鎮静や血圧低下などの全身副作用が少ないとされる薬剤は何ですか？",
+                        choices: ["フェノバルビタール", "ホスフェニトイン", "バルプロ酸", "レベチラセタム"],
+                        answer: "レベチラセタム",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は レベチラセタム だよ。新しい魔法の薬草だ。",
+                        supplementary: [
+                            "**レベチラセタム (LEV):** 新しい抗てんかん薬で、SV2Aに結合して神経伝達物質放出を調節するんだ。薬物相互作用が少なく、安全性プロファイルが良いとされているよ。",
+                            "**エビデンス:** 複数の臨床試験（EcLiPSE試験、ESETT試験など）で、ベンゾジアゼピン抵抗性の小児SEに対し、従来の薬剤と同等の効果で副作用が少ないことが示されているんだ。"
+                        ]
+                    }
+                ]
+            },
+            {
+                chapter: "真実の湖の深淵：検査と診断",
+                character: "赤いサンショウウオ",
+                story: "たくちゃん、ここは「真実の湖の深淵」だ。この湖は、隠された病気の原因を映し出す。様々な検査を駆使して、真実を見抜く力を養うんだ。",
+                questions: [
+                    {
+                        text: "痙攣重積状態の患者において、頭蓋内出血や大きな腫瘍、脳浮腫などを迅速に検出するために初療段階で有用とされる画像検査は何ですか？",
+                        choices: ["頭部MRI", "脳波検査 (EEG)", "頭部CT", "脳血管造影"],
+                        answer: "頭部CT",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は 頭部CT だよ。素早く全体像を把握するんだ。",
+                        supplementary: [
+                            "**頭部CT:** 撮像が迅速で、緊急性の高い構造的病変（出血、梗塞、大きな腫瘍など）を検出するのに適しているんだ。初療段階でまず考慮されるよ。まるで、森の全体像を素早く把握するための地図のようなものだね。",
+                            "**頭部MRI:** CTよりも詳細な画像が得られ、髄膜炎、脳炎、小さな病変などの検出に優れているんだ。全身状態が安定した後に施行されることが多いよ。こちらは、森の奥深くを詳細に探索するための精密な羅針盤のようなものだね。"
+                        ]
+                    },
+                    {
+                        text: "発熱と痙攣重積を伴う症例で、細菌性髄膜炎や脳炎を強く疑う場合、診断確定のために早期に行うべき検査は何ですか？",
+                        choices: ["血液培養", "髄液検査（腰椎穿刺）", "尿検査", "胸部X線検査"],
+                        answer: "髄液検査（腰椎穿刺）",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は 髄液検査（腰椎穿刺） だよ。湖の水を調べて原因を探るんだ。",
+                        supplementary: [
+                            "**髄液検査:** 中枢神経感染症（髄膜炎、脳炎）の診断に必須だ。髄液中の細胞数、蛋白、糖、病原体などを調べるんだ。",
+                            "**適応:** 発熱、髄膜刺激症状（項部硬直など）、意識障害などがみられる場合に強く推奨されるよ。ただし、頭蓋内圧亢進が疑われる場合は、CTで確認してから行うんだ。"
+                        ]
+                    }
+                ]
+            },
+            {
+                chapter: "希望の山の頂：集中管理と予後",
+                character: "赤いサンショウウオ",
+                story: "たくちゃん、ついに「希望の山の頂」に到達したね！ここからは、長期的な視点でのケアと、未来を見据えた予後管理の重要性を学ぶことができるぞ。",
+                questions: [
+                     {
+                        text: "痙攣重積状態を経験した小児が将来的に慢性的なてんかんを発症するリスクが高まることが知られています。特に、30分以上の熱性けいれん（熱性けいれん重積）は、将来的にどの部位のてんかんと関連することが指摘されていますか？",
+                        choices: ["前頭葉てんかん", "後頭葉てんかん", "側頭葉てんかん", "頭頂葉てんかん"],
+                        answer: "側頭葉てんかん",
+                        feedbackTitle: "残念...",
+                        feedbackText: "残念！正解は 側頭葉てんかん だよ。将来の道筋を見極めることも大切だ。",
+                        supplementary: [
+                            "**てんかん移行リスク:** 痙攣重積状態は、脳にダメージを与え、てんかんを発症しやすくなる可能性があるんだ。",
+                            "**熱性けいれん重積と側頭葉てんかん:** 長時間の熱性けいれんは、特に側頭葉（海馬など）に影響を与えやすく、後に側頭葉てんかんを発症するリスクを高めると考えられているんだ。まるで、過去の嵐が未来の景色に影響を与えるようなものだね。"
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let xp = 0;
+        let level = 1;
+        let incorrectAnswers = [];
+        let shuffledQuestions = [];
+        let questionsOrder = [];
+
+        const startGameBtn = document.getElementById('start-game-btn');
+        const gameIntroDiv = document.getElementById('game-intro');
+        const gameAreaDiv = document.getElementById('game-area');
+        const storyIntroDiv = document.getElementById('story-intro');
+        const questionDisplayDiv = document.getElementById('question-display');
+        const questionText = document.getElementById('question-text');
+        const answerChoicesDiv = document.getElementById('answer-choices');
+        const feedbackDisplayDiv = document.getElementById('feedback-display');
+        const feedbackTitle = document.getElementById('feedback-title');
+        const feedbackText = document.getElementById('feedback-text');
+        const supplementaryList = document.getElementById('supplementary-list');
+        const nextQuestionBtn = document.getElementById('next-question-btn');
+        const characterDialogueDiv = document.getElementById('character-dialogue');
+        const characterImage = document.getElementById('character-image');
+        const characterText = document.getElementById('character-text');
+        const progressBar = document.getElementById('progress-bar');
+        const xpLevelDisplay = document.getElementById('xp-level');
+        const gameEndDiv = document.getElementById('game-end');
+        const finalScorePara = document.getElementById('final-score');
+        const finalXpLevelPara = document.getElementById('final-xp-level');
+        const badgesEarnedDiv = document.getElementById('badges-earned');
+        const badgeList = document.getElementById('badge-list');
+        const incorrectAnswersSummaryDiv = document.getElementById('incorrect-answers-summary');
+        const weaknessFeedbackPara = document.getElementById('weakness-feedback');
+        const incorrectList = document.getElementById('incorrect-list');
+        const reviewModeBtn = document.getElementById('review-mode-btn');
+        const restartGameBtn = document.getElementById('restart-game-btn');
+        const shuffleQuestionsCheckbox = document.getElementById('shuffle-questions');
+        const shuffleChoicesCheckbox = document.getElementById('shuffle-choices');
+
+        // XP thresholds for leveling up (example)
+        const levelThresholds = [0, 50, 150, 300, 500, 800, 1200, 1700, 2300, 3000, 4000];
+        // 称号を研修医の成長段階に合わせる
+        const titles = ["見習い研修医", "知識の探求者", "てんかん重積の森の歩き方", "真実を見抜く者", "セファルスの賢者"];
+
+        // Badges (example)
+        const badges = {
+            perfectGame: { name: "てんかん重積マスター", description: "全問正解しました！" },
+            quickLearner: { name: "迅速対応の証", description: "不正解が3問未満でした！" }
+        };
+        let earnedBadges = [];
+
+        // Function to shuffle an array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]]; // Swap elements
+            }
+            return array;
+        }
+
+        // Function to get the current chapter's data
+        function getCurrentChapterData() {
+            let chapterIndex = Math.floor(currentQuestionIndex / 2); // Assuming 2 questions per chapter for now
+            if (chapterIndex >= gameData.length) chapterIndex = gameData.length - 1; // Prevent out of bounds
+             // Use the pre-shuffled order if available
+            return gameData[questionsOrder[chapterIndex]];
+        }
+
+        // Function to get the current question
+        function getCurrentQuestion() {
+            const currentChapterData = getCurrentChapterData();
+            const chapterQuestions = currentChapterData.questions;
+            // Use the pre-shuffled order within the chapter if available
+            const chapterDataIndexInGameData = gameData.indexOf(currentChapterData);
+            const shuffledChapterQuestions = shuffledQuestions[questionsOrder.indexOf(chapterDataIndexInGameData)];
+            const questionInChapterIndex = currentQuestionIndex % 2; // Assuming 2 questions per chapter
+            return chapterQuestions[shuffledChapterQuestions[questionInChapterIndex]];
+        }
+
+
+        // Function to update XP and Level
+        function updateXpAndLevel(gainedXp) {
+            xp += gainedXp;
+            let newLevel = level;
+            for (let i = 0; i < levelThresholds.length - 1; i++) {
+                if (xp >= levelThresholds[i] && xp < levelThresholds[i + 1]) {
+                    newLevel = i + 1;
+                    break;
+                } else if (xp >= levelThresholds[levelThresholds.length - 1]) {
+                    newLevel = levelThresholds.length;
+                    break;
+                }
+            }
+            level = newLevel;
+            const currentTitle = titles[Math.min(level - 1, titles.length - 1)];
+            xpLevelDisplay.textContent = `XP: ${xp} | レベル: ${level} | 称号: ${currentTitle}`;
+        }
+
+        // Function to update the progress bar
+        function updateProgressBar() {
+            const totalQuestions = gameData.reduce((sum, chapter) => sum + chapter.questions.length, 0);
+            const progress = (currentQuestionIndex / totalQuestions) * 100;
+            progressBar.style.width = `${progress}%`;
+            progressBar.textContent = `${Math.round(progress)}%`;
+        }
+
+        // Function to display the current question
+        function displayQuestion() {
+            const question = getCurrentQuestion();
+            if (!question) {
+                endGame();
+                return;
+            }
+
+            const currentChapterData = getCurrentChapterData();
+            storyIntroDiv.innerHTML = `<p>${currentChapterData.story}</p>`;
+
+            // Display character image and dialogue
+            characterImage.src = characterImages[currentChapterData.character];
+            characterImage.classList.remove('hidden');
+            characterText.textContent = `${currentChapterData.character}：${currentChapterData.story.split('。')[currentChapterData.story.split('。').length - 2].trim()}。`; // ストーリーの最後の文をセリフとして表示
+
+            questionText.textContent = question.text;
+            answerChoicesDiv.innerHTML = ''; // Clear previous choices
+
+            let choicesToDisplay = [...question.choices];
+            if (shuffleChoicesCheckbox.checked) {
+                 choicesToDisplay = shuffleArray(choicesToDisplay);
+            }
+
+
+            choicesToDisplay.forEach(choice => {
+                const button = document.createElement('button');
+                button.textContent = choice;
+                button.classList.add('bg-blue-200', 'hover:bg-blue-300', 'text-blue-800', 'font-semibold', 'py-2', 'px-4', 'rounded-md', 'text-left');
+                button.onclick = () => checkAnswer(choice);
+                answerChoicesDiv.appendChild(button);
+            });
+
+            feedbackDisplayDiv.classList.add('hidden');
+            questionDisplayDiv.classList.remove('hidden');
+            nextQuestionBtn.classList.add('hidden');
+        }
+
+        // Function to check the answer
+        function checkAnswer(selectedChoice) {
+            const question = getCurrentQuestion();
+            const isCorrect = selectedChoice === question.answer;
+
+            answerChoicesDiv.querySelectorAll('button').forEach(button => {
+                button.disabled = true; // Disable buttons after selection
+                if (button.textContent === question.answer) {
+                    button.classList.remove('bg-blue-200', 'hover:bg-blue-300', 'bg-red-500'); // Remove other colors
+                    button.classList.add('bg-green-500', 'text-white'); // Correct answer highlight
+                } else if (button.textContent === selectedChoice) {
+                     button.classList.remove('bg-blue-200', 'hover:bg-blue-300', 'bg-green-500'); // Remove other colors
+                    button.classList.add('bg-red-500', 'text-white'); // Incorrect answer highlight
+                } else {
+                    button.classList.remove('bg-blue-200', 'hover:bg-blue-300', 'bg-green-500', 'bg-red-500'); // Remove other colors
+                    button.classList.add('bg-gray-300', 'text-gray-700'); // Dim other options
+                }
+            });
+
+            questionDisplayDiv.classList.add('hidden');
+            feedbackDisplayDiv.classList.remove('hidden');
+            nextQuestionBtn.classList.remove('hidden');
+
+            // Hide character image and clear dialogue during feedback
+            characterImage.classList.add('hidden');
+            characterText.textContent = '';
+
+            if (isCorrect) {
+                score++;
+                updateXpAndLevel(10); // Award 10 XP for correct answer
+                feedbackTitle.textContent = "正解！素晴らしい！";
+                feedbackTitle.classList.remove('text-red-700');
+                feedbackTitle.classList.add('text-green-700');
+                feedbackText.textContent = `赤いサンショウウオ：よくやったね、たくちゃん！`;
+                supplementaryList.innerHTML = ''; // Clear previous supplementary points
+            } else {
+                incorrectAnswers.push({
+                    question: question.text,
+                    yourAnswer: selectedChoice,
+                    correctAnswer: question.answer,
+                    feedback: question.feedbackText,
+                    supplementary: question.supplementary
+                });
+                 updateXpAndLevel(5); // Award 5 XP for incorrect answer (partial learning)
+                feedbackTitle.textContent = question.feedbackTitle;
+                 feedbackTitle.classList.remove('text-green-700');
+                feedbackTitle.classList.add('text-red-700');
+                feedbackText.textContent = question.feedbackText;
+                supplementaryList.innerHTML = ''; // Clear previous supplementary points
+                if (question.supplementary) { // Check if supplementary exists
+                     question.supplementary.forEach(point => {
+                        const li = document.createElement('li');
+                        li.innerHTML = point; // Use innerHTML to render bold/italics from markdown
+                        supplementaryList.appendChild(li);
+                    });
+                }
+            }
+        }
+
+        // Function to move to the next question
+        function nextQuestion() {
+            currentQuestionIndex++;
+            updateProgressBar();
+            const totalQuestions = gameData.reduce((sum, chapter) => sum + chapter.questions.length, 0);
+            if (currentQuestionIndex < totalQuestions) {
+                displayQuestion();
+            } else {
+                endGame();
+            }
+        }
+
+         // Function to end the game
+        function endGame() {
+            gameAreaDiv.classList.add('hidden');
+            gameEndDiv.classList.remove('hidden');
+
+            const totalQuestions = gameData.reduce((sum, chapter) => sum + chapter.questions.length, 0);
+            finalScorePara.textContent = `最終スコア: ${score} / ${totalQuestions}`;
+            finalXpLevelPara.textContent = `最終XP: ${xp} | 最終レベル: ${level} | 称号: ${titles[Math.min(level - 1, titles.length - 1)]}`;
+
+            // Award badges
+            earnedBadges = [];
+            if (score === totalQuestions) {
+                earnedBadges.push(badges.perfectGame);
+            }
+            if (incorrectAnswers.length < 3) {
+                 earnedBadges.push(badges.quickLearner);
+            }
+
+            badgeList.innerHTML = '';
+            if (earnedBadges.length > 0) {
+                earnedBadges.forEach(badge => {
+                    const li = document.createElement('li');
+                    li.textContent = `🏆 ${badge.name}: ${badge.description}`;
+                    badgeList.appendChild(li);
+                });
+            } else {
+                badgeList.innerHTML = '<li>バッジの獲得はありませんでした。</li>';
+            }
+
+
+            // Display incorrect answers summary
+            incorrectList.innerHTML = '';
+            if (incorrectAnswers.length > 0) {
+                 weaknessFeedbackPara.textContent = `たくちゃん、君は${incorrectAnswers.length}問を間違えてしまったね。以下の問題を見直して、もっと強くなろう！`;
+                incorrectAnswersSummaryDiv.classList.remove('hidden');
+                incorrectAnswers.forEach(item => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `**問題:** ${item.question}<br>あなたの解答: ${item.yourAnswer}<br>正解: ${item.correctAnswer}<br>**解説:** ${item.feedback}`;
+                     if (item.supplementary && item.supplementary.length > 0) {
+                        li.innerHTML += '<br><em>補足学習ポイント:</em>';
+                        item.supplementary.forEach(sup => {
+                            li.innerHTML += `<br>- ${sup}`;
+                        });
+                     }
+                    incorrectList.appendChild(li);
+                });
+
+            } else {
+                 weaknessFeedbackPara.textContent = "たくちゃん、全問正解だ！素晴らしい！君は「てんかん重積の森」の真の賢者だね！";
+                 incorrectAnswersSummaryDiv.classList.remove('hidden'); // Still show the perfect score message
+            }
+        }
+
+        // Function to start a new game
+        function startNewGame(isReviewMode = false) {
+            currentQuestionIndex = 0;
+            score = 0;
+            xp = 0;
+            level = 1;
+            incorrectAnswers = [];
+            earnedBadges = [];
+
+            gameIntroDiv.classList.add('hidden');
+            gameEndDiv.classList.add('hidden');
+            gameAreaDiv.classList.remove('hidden');
+             feedbackDisplayDiv.classList.add('hidden'); // Hide feedback at the start
+
+            updateXpAndLevel(0); // Initialize XP and Level display
+            updateProgressBar(); // Initialize progress bar
+
+            // Prepare questions for the new game
+            if (shuffleQuestionsCheckbox.checked) {
+                // Shuffle the order of chapters first
+                questionsOrder = shuffleArray(Array.from({ length: gameData.length }, (_, i) => i));
+                // Then shuffle questions within each chapter and store the order
+                shuffledQuestions = questionsOrder.map(chapterIndex => {
+                    const chapterQuestions = gameData[chapterIndex].questions;
+                    return shuffleArray(Array.from({ length: chapterQuestions.length }, (_, i) => i));
+                });
+            } else {
+                 // Use original order
+                 questionsOrder = Array.from({ length: gameData.length }, (_, i) => i);
+                 shuffledQuestions = gameData.map(chapter => Array.from({ length: chapter.questions.length }, (_, i) => i));
+            }
+
+            if (isReviewMode) {
+                 // Filter gameData to only include questions that were previously answered incorrectly
+                 // Note: This requires storing the original question objects or indices
+                 // For simplicity in this example, we'll just restart the full game for now.
+                 // A more robust review mode would need a different data structure.
+                 alert("復習モードは現在開発中です。代わりに通常モードで再挑戦します。");
+                 startNewGame(false); // Fallback to normal restart
+                 return;
+            }
+
+            displayQuestion(); // Display the first question
+        }
+
+
+        // Event Listeners
+        startGameBtn.addEventListener('click', () => startNewGame());
+        nextQuestionBtn.addEventListener('click', nextQuestion);
+        restartGameBtn.addEventListener('click', () => startNewGame());
+        reviewModeBtn.addEventListener('click', () => startNewGame(true)); // Pass true for review mode
+
+        // Initial setup
+        updateXpAndLevel(0); // Display initial XP and Level
+    </script>
+</body>
+</html>
