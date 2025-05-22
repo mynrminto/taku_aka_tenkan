@@ -69,18 +69,20 @@
             padding: 15px;
             background-color: #fecaca; /* 薄い赤系の背景 */
             border-radius: 15px;
-            display: flex;
-            align-items: center;
+            /* 画像を削除したので、flexboxのスタイルは不要 */
+            /* display: flex; */
+            /* align-items: center; */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        .character-dialogue img {
-            width: 100px; /* キャラクター画像を大きく */
+        /* キャラクター画像は削除したので、imgのスタイルも不要 */
+        /* .character-dialogue img {
+            width: 100px;
             height: 100px;
             border-radius: 50%;
             margin-right: 20px;
-            border: 4px solid #dc2626; /* 赤いボーダー */
+            border: 4px solid #dc2626;
             object-fit: cover;
-        }
+        } */
         .progress-bar-container {
             width: 100%;
             background-color: #e2e8f0;
@@ -164,22 +166,21 @@
         h1, h2, h3, h4 {
             color: #881337; /* 見出しの色を赤系に */
         }
-        #game-title-image {
+        /* タイトル画像も削除したので、このスタイルも不要 */
+        /* #game-title-image {
             display: block;
-            margin: 0 auto 25px; /* マージンを増やす */
-            max-width: 95%; /* 少し大きく */
+            margin: 0 auto 25px;
+            max-width: 95%;
             height: auto;
             border-radius: 20px;
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        }
+        } */
 
     </style>
 </head>
 <body class="p-4">
     <div class="game-container">
         <h1 class="text-3xl font-bold text-center mb-6">たくちゃんの赤いサンショウウオ：てんかん重積の森を越えろ！</h1>
-        <img id="game-title-image" src="uploaded:DALL·E 2025-03-23 01.21.54 - A magical river scene in a forest where a young Japanese boy (Taku) and a red giant salamander swim toward a glowing underwater door. The door is anci.jpg-96d2822e-09a7-47b1-81b5-ad8e2e39363c" alt="ゲームタイトル画像" onerror="this.onerror=null;this.src='https://placehold.co/600x180/cccccc/333333?text=タイトル画像';">
-
         <div id="game-intro">
             <p class="mb-4">研修医のたくちゃん、君は日々の忙しさに追われる中で、ある日、不思議な赤いサンショウウオに出会った。そのサンショウウオは、小児科の奥深い知識が隠された「てんかん重積の森」への道を示している。さあ、サンショウウオの導きに従い、森の奥に潜む様々な「医療の試練」に立ち向かい、小児のてんかん重積状態に関する真の知識と自信を手に入れよう！</p>
             <p class="mb-4 text-center">冒険を開始するには、下のボタンをクリックしてください。</p>
@@ -213,7 +214,6 @@
             </div>
 
             <div id="character-dialogue" class="character-dialogue">
-                <img id="character-image" src="uploaded:ChatGPT Image 2025年4月1日 20_53_30.jpg-38da21c3-7db7-4593-89ba-de119af3cfba" alt="赤いサンショウウオ" class="hidden" onerror="this.onerror=null;this.src='https://placehold.co/100x100/cccccc/333333?text=サンショウウオ';">
                 <span id="character-text"></span>
             </div>
         </div>
@@ -247,10 +247,8 @@
     </div>
 
     <script>
-        // キャラクター画像URL（アップロードされた画像を使用）
-        const characterImages = {
-            "赤いサンショウウオ": "uploaded:ChatGPT Image 2025年4月1日 20_53_30.jpg-38da21c3-7db7-4593-89ba-de119af3cfba"
-        };
+        // キャラクター画像URLは削除しました
+        const characterImages = {}; // 空のオブジェクトに
 
         // ゲームデータ（問題、回答、フィードバック）
         const gameData = [
@@ -423,7 +421,7 @@
         const supplementaryList = document.getElementById('supplementary-list');
         const nextQuestionBtn = document.getElementById('next-question-btn');
         const characterDialogueDiv = document.getElementById('character-dialogue');
-        const characterImage = document.getElementById('character-image');
+        // const characterImage = document.getElementById('character-image'); // 削除
         const characterText = document.getElementById('character-text');
         const progressBar = document.getElementById('progress-bar');
         const xpLevelDisplay = document.getElementById('xp-level');
@@ -518,9 +516,9 @@
             const currentChapterData = getCurrentChapterData();
             storyIntroDiv.innerHTML = `<p>${currentChapterData.story}</p>`;
 
-            // Display character image and dialogue
-            characterImage.src = characterImages[currentChapterData.character];
-            characterImage.classList.remove('hidden');
+            // キャラクター画像は削除したので、テキストのみ表示
+            // characterImage.src = characterImages[currentChapterData.character]; // 削除
+            // characterImage.classList.remove('hidden'); // 削除
             characterText.textContent = `${currentChapterData.character}：${currentChapterData.story.split('。')[currentChapterData.story.split('。').length - 2].trim()}。`; // ストーリーの最後の文をセリフとして表示
 
             questionText.textContent = question.text;
@@ -568,8 +566,8 @@
             feedbackDisplayDiv.classList.remove('hidden');
             nextQuestionBtn.classList.remove('hidden');
 
-            // Hide character image and clear dialogue during feedback
-            characterImage.classList.add('hidden');
+            // キャラクター画像は削除したので、テキストのみ表示
+            // characterImage.classList.add('hidden'); // 削除
             characterText.textContent = '';
 
             if (isCorrect) {
