@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>たくちゃんの赤いサンショウウオ：てんかん重積の森を越えろ！</title>
+    <title>たくちゃんの赤いサンショウウオ：てんかん重積クイズ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
@@ -56,33 +56,12 @@
         }
 
         .feedback-area {
-            min-height: 200px;
+            min-height: 100px; /* フィードバックエリアを小さく */
             background-color: #bfdbfe; /* 薄い水色 */
             border-left: 8px solid #ef4444; /* 強調された赤い左ボーダー */
             border-radius: 20px;
             padding: 25px;
         }
-        .character-dialogue {
-            font-style: italic;
-            color: #881337; /* 赤系の文字色 */
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #fecaca; /* 薄い赤系の背景 */
-            border-radius: 15px;
-            /* 画像を削除したので、flexboxのスタイルは不要 */
-            /* display: flex; */
-            /* align-items: center; */
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-        /* キャラクター画像は削除したので、imgのスタイルも不要 */
-        /* .character-dialogue img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            margin-right: 20px;
-            border: 4px solid #dc2626;
-            object-fit: cover;
-        } */
         .progress-bar-container {
             width: 100%;
             background-color: #e2e8f0;
@@ -149,13 +128,6 @@
         }
 
 
-        #story-intro {
-            background-color: #fef3c7; /* 薄い黄色 */
-            border-left-color: #fbbf24; /* 黄色のボーダー */
-            border-radius: 15px;
-            padding: 20px;
-        }
-
         #incorrect-answers-summary {
             background-color: #fee2e2; /* 薄い赤 */
             border-left-color: #ef4444; /* 赤のボーダー */
@@ -166,31 +138,20 @@
         h1, h2, h3, h4 {
             color: #881337; /* 見出しの色を赤系に */
         }
-        /* タイトル画像も削除したので、このスタイルも不要 */
-        /* #game-title-image {
-            display: block;
-            margin: 0 auto 25px;
-            max-width: 95%;
-            height: auto;
-            border-radius: 20px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-        } */
 
     </style>
 </head>
 <body class="p-4">
     <div class="game-container">
-        <h1 class="text-3xl font-bold text-center mb-6">たくちゃんの赤いサンショウウオ：てんかん重積の森を越えろ！</h1>
+        <h1 class="text-3xl font-bold text-center mb-6">たくちゃんの赤いサンショウウオ：てんかん重積クイズ</h1>
+
         <div id="game-intro">
-            <p class="mb-4">研修医のたくちゃん、君は日々の忙しさに追われる中で、ある日、不思議な赤いサンショウウオに出会った。そのサンショウウオは、小児科の奥深い知識が隠された「てんかん重積の森」への道を示している。さあ、サンショウウオの導きに従い、森の奥に潜む様々な「医療の試練」に立ち向かい、小児のてんかん重積状態に関する真の知識と自信を手に入れよう！</p>
-            <p class="mb-4 text-center">冒険を開始するには、下のボタンをクリックしてください。</p>
-            <button id="start-game-btn" class="block mx-auto">冒険を開始する</button>
+            <p class="mb-4">研修医のたくちゃん、君は日々の忙しさに追われる中で、小児のてんかん重積状態に関する知識をクイズ形式で試すことにした。さあ、問題に挑戦して、知識を深めよう！</p>
+            <p class="mb-4 text-center">クイズを開始するには、下のボタンをクリックしてください。</p>
+            <button id="start-game-btn" class="block mx-auto">クイズを開始する</button>
         </div>
 
         <div id="game-area" class="hidden">
-            <div id="story-intro" class="mb-6">
-                </div>
-
             <div class="progress-bar-container">
                 <div id="progress-bar" class="progress-bar" style="width: 0%;">0%</div>
             </div>
@@ -210,16 +171,12 @@
                     <ul id="supplementary-list" class="list-disc list-inside ml-4 space-y-1">
                         </ul>
                 </div>
-                <button id="next-question-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md mt-4">次の試練へ</button>
-            </div>
-
-            <div id="character-dialogue" class="character-dialogue">
-                <span id="character-text"></span>
+                <button id="next-question-btn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg shadow-md mt-4">次の問題へ</button>
             </div>
         </div>
 
         <div id="game-end" class="hidden text-center">
-            <h2 class="text-3xl font-bold mb-4">冒険終了！</h2>
+            <h2 class="text-3xl font-bold mb-4">クイズ終了！</h2>
             <p id="final-score" class="text-lg mb-2"></p>
             <p id="final-xp-level" class="text-lg mb-4"></p>
             <div id="badges-earned" class="mb-6">
@@ -233,7 +190,7 @@
                 <ul id="incorrect-list" class="list-disc list-inside ml-4 space-y-2">
                     </ul>
             </div>
-            <div class="flex justify-center space-x-4">
+            <div class="flex justify-center space-x-4 mt-6">
                  <button id="review-mode-btn" class="bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-lg shadow-md">復習モード</button>
                  <button id="restart-game-btn" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg shadow-md">もう一度挑戦する</button>
             </div>
@@ -247,153 +204,97 @@
     </div>
 
     <script>
-        // キャラクター画像URLは削除しました
-        const characterImages = {}; // 空のオブジェクトに
-
         // ゲームデータ（問題、回答、フィードバック）
+        // ストーリーや会話は削除し、問題とフィードバックテキストのみに
         const gameData = [
             {
-                chapter: "始まりの森のささやき：定義と病態の理解",
-                character: "赤いサンショウウオ",
-                story: "研修医のたくちゃん、緑豊かな「始まりの森」に足を踏み入れたね。ここが「てんかん重積の森」の入り口だ。まずは、この森の基本的なルール、つまり「てんかん重積状態」の定義と病態を学んでいこう。",
+                chapter: "ベンゾジアゼピンを“早く”使う理由",
                 questions: [
                     {
-                        text: "国際抗てんかん連盟（ILAE）が提唱したてんかん重積状態の新しい定義において、強直間代けいれん性SEで「この時間を超えると発作が自然停止しにくい時間（t1）」として設定されているのは何分ですか？",
-                        choices: ["1分", "5分", "10分", "30分"],
-                        answer: "5分",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は 5分 だよ。たくちゃん、もう一度よく見てみよう。",
+                        text: "てんかん発作が10分以上続くと、神経細胞で何が起こり、ベンゾジアゼピン系薬の効果が低下すると説明されましたか？",
+                        choices: ["GABA_A受容体が細胞外に増える", "GABA_A受容体が内側に取り込まれる（内在化）", "Cl⁻チャネルが閉じる", "神経伝達物質の放出が増える"],
+                        answer: "GABA_A受容体が内側に取り込まれる（内在化）",
+                        feedbackTitle: "正解！",
+                        feedbackText: "その通り！神経細胞は受容体を内在化させ、薬の効きが悪くなるんだ。",
                         supplementary: [
-                            "**時間こそ脳 (Time is brain):** 痙攣重積状態では、発作が長く続くほど脳へのダメージが大きくなるんだ。t1とt2という時間指標は、迅速な対応の重要性を示しているよ。",
-                            "**t1とt2:** t1は治療を開始すべき目安の時間、t2は神経後遺症のリスクが高まる時間だ。強直間代けいれん性SEではt1=5分、t2=30分だよ。他の発作型ではこれらの時間が異なるから注意してね（例：焦点性意識障害を伴う部分発作SEではt1~10分、t2~60分）。",
-                            "**比喩:** 痙攣重積状態は、まるでブレーキが効かなくなった暴走列車のようなものだ。t1の時点で早期に介入（非常ブレーキをかける）しないと、t2の時点では脱線（神経後遺症）のリスクが非常に高くなってしまうんだ。"
-                        ]
-                    },
-                    {
-                        text: "外見上は明らかな全身性のけいれんを伴わないが、意識障害や軽度の自動症が見られるてんかん重積状態は何と呼ばれますか？",
-                        choices: ["けいれん性SE", "非けいれん性SE", "微小発作SE", "焦点性意識障害発作重積"],
-                        answer: "非けいれん性SE",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は 非けいれん性SE だよ。見逃しやすいから気をつけようね。",
-                        supplementary: [
-                            "**非けいれん性SE:** けいれんが見られないため見逃されやすいが、脳波上は発作が続いており、脳に持続的な負荷がかかっているんだ。隠れた敵を見つけるようなものだね。",
-                            "**微小発作SE:** 全身けいれん性SEが長時間続いた後に、けいれんが目立たなくなる状態だ。これも非けいれん性SEの一種とみなされ、治療継続が必要だよ。"
+                            "**内在化:** 薬剤の標的となる受容体が細胞内に取り込まれることで、薬が作用する場所が減り、効果が低下する現象です。",
+                            "**時間との戦い:** この内在化が起こる前に、つまり発作早期にベンゾジアゼピンを投与することが、治療成功の鍵となります。"
                         ]
                     }
                 ]
             },
             {
-                chapter: "緊急の川の急流：初期対応の迅速さ",
-                character: "赤いサンショウウオ",
-                story: "たくちゃん、ここは「緊急の川の急流」だ。流れは速く、一刻を争う状況が多い。ここでは、患者さんの命を守るための迅速な初期対応が求められるぞ。",
+                chapter: "時間に応じた治療ステップ",
                 questions: [
-                     {
-                        text: "小児の痙攣重積状態における初期対応の基本となるA~G評価で、最も優先される「A」は何を指しますか？",
-                        choices: ["意識レベル (Awareness)", "気道確保 (Airway)", "呼吸 (Breathing)", "循環 (Circulation)"],
-                        answer: "気道確保 (Airway)",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は 気道確保 (Airway) だよ。呼吸の道を開くことが一番大事だ。",
+                    {
+                        text: "痙攣開始から0〜5分の「観察と準備」の段階で、特に重要視すべき3つの初期対応は何ですか？",
+                        choices: ["心臓マッサージ、AED準備、輸血準備", "酸素投与、血糖測定、静脈路確保", "頭部CT、髄液検査、脳波測定", "抗生剤投与、抗ウイルス剤投与、ステロイド投与"],
+                        answer: "酸素投与、血糖測定、静脈路確保",
+                        feedbackTitle: "正解！",
+                        feedbackText: "その通り！この時点では“見る”ことが重要だが、止まらなければすぐに“動く”べきだ。",
                         supplementary: [
-                            "**A-G評価:** 救命措置の基本中の基本だ。A(気道確保) -> B(呼吸) -> C(循環) -> D(神経学的評価/障害) -> E(体温/全身観察) -> F(情報収集) -> G(治療開始) の順に進めるんだ。",
-                            "**気道確保の重要性:** 痙攣中は舌根沈下や誤嚥のリスクが高く、気道確保が最優先だ。これにより呼吸と酸素化を確保するんだ。まるで、詰まった水道管を直すようなものだね。"
+                            "**初期対応のABC:** 救命処置の基本であり、てんかん重積状態でも同様に重要です。特に低血糖は痙攣の可逆的な原因となるため、迅速な血糖測定が必須です。"
                         ]
                     },
                     {
-                        text: "初期対応の「D: Disability」において、特に迅速な確認と対応が求められる可逆的な原因は何ですか？",
-                        choices: ["高体温", "低血圧", "低血糖", "電解質異常"],
-                        answer: "低血糖",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は 低血糖 だよ。すぐにエネルギーを補給してあげよう。",
+                        // ユーザーの要望に合わせて正解を「2回」に変更
+                        text: "痙攣開始から5〜10分の「ベンゾジアゼピンの時間」において、ベンゾジアゼピン系薬の再投与は最大何回までが推奨されていますか？",
+                        choices: ["1回", "2回", "3回", "制限なし"],
+                        answer: "2回", // 正解を「2回」に変更
+                        feedbackTitle: "正解！",
+                        feedbackText: "その通り！効かないと感じたら、すぐに次へ進む判断が重要だ。",
                         supplementary: [
-                            "**Dextroseを忘れるな:** Dの評価では、迅速な血糖測定が非常に重要だ。低血糖は痙攣の原因となり、ブドウ糖投与で速やかに改善する可能性があるんだ。",
-                            "**小児の低血糖リスク:** 小児は代謝予備能が低いから、長時間の痙攣で低血糖に陥りやすいんだ。まるで、電池切れで動かなくなるおもちゃのようなものだね。"
+                            "**再投与の制限:** ベンゾジアゼピン系薬は即効性がありますが、効果がなければ受容体内在化の可能性が高く、漫然と繰り返すのは避けるべきです。次の治療ステップへ迅速に移行することが求められます。",
+                            "**臨床的ガイドライン:** 多くのガイドラインでは、ベンゾジアゼピンの再投与は1回までとし、合計2回（初回＋再投与）で効果がなければ次の薬剤へ移行することを推奨しています。"
+                        ]
+                    },
+                    {
+                        text: "痙攣開始から10〜30分の「第二選択薬」の段階で推奨される薬剤の一つ、ホスフェニトイン（fPHT）の作用機序として正しいものはどれですか？",
+                        choices: ["GABA_A受容体を直接開口させる", "シナプス小胞タンパクSV2Aに結合する", "電位依存性ナトリウムチャネルを遮断し、不活性化状態を安定化する", "セロトニン再取り込みを阻害する"],
+                        answer: "電位依存性ナトリウムチャネルを遮断し、不活性化状態を安定化する",
+                        feedbackTitle: "正解！",
+                        feedbackText: "その通り！Naチャネル遮断薬は、興奮伝達の抑制に有効だ。",
+                        supplementary: [
+                            "**ホスフェニトイン (fPHT):** フェニトインのプロドラッグで、体内でフェニトインに加水分解されて効果を発揮します。血管刺激が少なく、静脈投与に適しています。",
+                            "**作用機序:** 神経細胞の興奮を抑えることで、発作の伝播を阻止します。"
+                        ]
+                    },
+                    {
+                        text: "痙攣が30分以上続く「難治性SE（RSE）」の段階で用いられるチオペンタールは、どのような特徴を持つ薬剤ですか？",
+                        choices: ["呼吸抑制や循環抑制のリスクが低い", "GABA_A受容体を直接開口させ、深い鎮静〜昏睡状態へ導く", "意識清明なまま発作を止めることができる", "主に外来での使用が推奨される"],
+                        answer: "GABA_A受容体を直接開口させ、深い鎮静〜昏睡状態へ導く",
+                        feedbackTitle: "正解！",
+                        feedbackText: "その通り！このフェーズでは“沈める”医療になる。強力な抑制作用と共に、呼吸抑制・循環抑制を引き起こすため、ICU管理下での使用が必須だ。",
+                        supplementary: [
+                            "**チオペンタール:** バルビツール酸系の静注麻酔薬で、難治性てんかん重積（RSE）に対して強力な抑制作用を発揮します。",
+                            "**副作用と管理:** その強力な作用ゆえに、呼吸抑制や循環抑制といった重篤な副作用のリスクが高く、集中治療室（ICU）での厳重な管理（burst suppression導入など）が必要です。"
                         ]
                     }
                 ]
             },
             {
-                chapter: "薬草洞窟の輝き：薬物療法の知識",
-                character: "赤いサンショウウオ",
-                story: "たくちゃん、ここは「薬草洞窟の輝き」だ。ここでは、てんかん重積状態に用いられる様々な魔法の薬草、つまり薬剤の秘密を学ぶことができるぞ。",
+                chapter: "けいれん持続時間と後遺症リスク",
                 questions: [
                     {
-                        text: "痙攣重積状態の薬物療法において、発作開始後5分以内の投与が理想とされる第一選択薬の薬剤クラスは何ですか？",
-                        choices: ["バルビツール酸系", "フェニトイン系", "ベンゾジアゼピン系", "レベチラセタム"],
-                        answer: "ベンゾジアゼピン系",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は ベンゾジアゼピン系 だよ。最初の魔法の呪文だ。",
+                        text: "けいれんが30分以上続いた場合、MRIで海馬の高信号域が見られることがあると言っていたね。これは将来的に何のリスクの予兆となる可能性がありますか？",
+                        choices: ["腎機能障害", "心臓病", "てんかん発症リスクや記憶障害", "呼吸器疾患"],
+                        answer: "てんかん発症リスクや記憶障害",
+                        feedbackTitle: "正解！",
+                        feedbackText: "その通り！脳への影響は特に重要だ。これは将来的なてんかん発症リスクや記憶障害の予兆ともなる。",
                         supplementary: [
-                            "**ベンゾジアゼピン系:** GABA_A受容体に作用し、脳の過剰な興奮を迅速に抑えるんだ。ジアゼパム、ミダゾラム、ロラゼパムなどがあるよ。",
-                            "**早期投与の重要性:** 発作開始からベンゾジアゼピン投与までの時間遅延が、予後悪化や難治化のリスクを高めると報告されているんだ。魔法は早く唱えるほど効果があるんだね。"
+                            "**脳への影響:** 30分以上のけいれん持続は、神経細胞の代謝障害、アポトーシス（細胞死）、神経変性を引き起こす明確なリスクがあるんだ。",
+                            "**海馬と記憶:** 海馬は記憶形成に重要な役割を果たす脳の部位だよ。ここに異常所見が見られると、将来的にてんかんの発症や記憶障害につながる可能性があるんだ。"
                         ]
                     },
                     {
-                        text: "長時間の発作持続により、神経細胞膜上のGABA_A受容体が減少し、ベンゾジアゼピン系薬の効果が低下する現象は何と呼ばれますか？",
-                        choices: ["タキフィラキシー（耐性）", "感受性亢進", "受容体アップレギュレーション", "代謝促進"],
-                        answer: "タキフィラキシー（耐性）",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は タキフィラキシー（耐性） だよ。同じ魔法ばかりだと効き目が悪くなるんだ。",
+                        text: "「君が5分で動けるかどうかが、5年後のその子の脳を左右することもあるんだよ」と言っていたね。これは、てんかん重積状態の治療において何が最も重要であることを示唆していますか？",
+                        choices: ["患者の年齢", "治療薬の種類", "早期診断と早期介入", "家族の協力"],
+                        answer: "早期診断と早期介入",
+                        feedbackTitle: "正解！",
+                        feedbackText: "その通り！時間との戦いなんだ。けいれんを止める、というのは、いまの発作を止めるだけでなく、“その子のこれからの人生を守る”ということなんだ。",
                         supplementary: [
-                            "**タキフィラキシー:** 薬剤を繰り返し投与したり、長時間作用させたりすることで効果が減弱する現象だ。ベンゾジアゼピン系薬で起こりやすく、難治性SEの原因の一つなんだ。",
-                            "**受容体変化:** 長時間の発作により、抑制性のGABA_A受容体が細胞内に取り込まれ（内在化）、興奮性のNMDA受容体が細胞膜上に増えることが報告されているんだ。これが薬剤耐性に関与するんだよ。まるで、鍵穴（受容体）が隠れてしまったり、違う鍵穴が増えてしまったりするようなものだね。"
-                        ]
-                    },
-                    {
-                        text: "ベンゾジアゼピン抵抗性の確立したSE（established SE）に対する第二選択薬として、シナプス小胞タンパクSV2Aに結合し、鎮静や血圧低下などの全身副作用が少ないとされる薬剤は何ですか？",
-                        choices: ["フェノバルビタール", "ホスフェニトイン", "バルプロ酸", "レベチラセタム"],
-                        answer: "レベチラセタム",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は レベチラセタム だよ。新しい魔法の薬草だ。",
-                        supplementary: [
-                            "**レベチラセタム (LEV):** 新しい抗てんかん薬で、SV2Aに結合して神経伝達物質放出を調節するんだ。薬物相互作用が少なく、安全性プロファイルが良いとされているよ。",
-                            "**エビデンス:** 複数の臨床試験（EcLiPSE試験、ESETT試験など）で、ベンゾジアゼピン抵抗性の小児SEに対し、従来の薬剤と同等の効果で副作用が少ないことが示されているんだ。"
-                        ]
-                    }
-                ]
-            },
-            {
-                chapter: "真実の湖の深淵：検査と診断",
-                character: "赤いサンショウウオ",
-                story: "たくちゃん、ここは「真実の湖の深淵」だ。この湖は、隠された病気の原因を映し出す。様々な検査を駆使して、真実を見抜く力を養うんだ。",
-                questions: [
-                    {
-                        text: "痙攣重積状態の患者において、頭蓋内出血や大きな腫瘍、脳浮腫などを迅速に検出するために初療段階で有用とされる画像検査は何ですか？",
-                        choices: ["頭部MRI", "脳波検査 (EEG)", "頭部CT", "脳血管造影"],
-                        answer: "頭部CT",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は 頭部CT だよ。素早く全体像を把握するんだ。",
-                        supplementary: [
-                            "**頭部CT:** 撮像が迅速で、緊急性の高い構造的病変（出血、梗塞、大きな腫瘍など）を検出するのに適しているんだ。初療段階でまず考慮されるよ。まるで、森の全体像を素早く把握するための地図のようなものだね。",
-                            "**頭部MRI:** CTよりも詳細な画像が得られ、髄膜炎、脳炎、小さな病変などの検出に優れているんだ。全身状態が安定した後に施行されることが多いよ。こちらは、森の奥深くを詳細に探索するための精密な羅針盤のようなものだね。"
-                        ]
-                    },
-                    {
-                        text: "発熱と痙攣重積を伴う症例で、細菌性髄膜炎や脳炎を強く疑う場合、診断確定のために早期に行うべき検査は何ですか？",
-                        choices: ["血液培養", "髄液検査（腰椎穿刺）", "尿検査", "胸部X線検査"],
-                        answer: "髄液検査（腰椎穿刺）",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は 髄液検査（腰椎穿刺） だよ。湖の水を調べて原因を探るんだ。",
-                        supplementary: [
-                            "**髄液検査:** 中枢神経感染症（髄膜炎、脳炎）の診断に必須だ。髄液中の細胞数、蛋白、糖、病原体などを調べるんだ。",
-                            "**適応:** 発熱、髄膜刺激症状（項部硬直など）、意識障害などがみられる場合に強く推奨されるよ。ただし、頭蓋内圧亢進が疑われる場合は、CTで確認してから行うんだ。"
-                        ]
-                    }
-                ]
-            },
-            {
-                chapter: "希望の山の頂：集中管理と予後",
-                character: "赤いサンショウウオ",
-                story: "たくちゃん、ついに「希望の山の頂」に到達したね！ここからは、長期的な視点でのケアと、未来を見据えた予後管理の重要性を学ぶことができるぞ。",
-                questions: [
-                     {
-                        text: "痙攣重積状態を経験した小児が将来的に慢性的なてんかんを発症するリスクが高まることが知られています。特に、30分以上の熱性けいれん（熱性けいれん重積）は、将来的にどの部位のてんかんと関連することが指摘されていますか？",
-                        choices: ["前頭葉てんかん", "後頭葉てんかん", "側頭葉てんかん", "頭頂葉てんかん"],
-                        answer: "側頭葉てんかん",
-                        feedbackTitle: "残念...",
-                        feedbackText: "残念！正解は 側頭葉てんかん だよ。将来の道筋を見極めることも大切だ。",
-                        supplementary: [
-                            "**てんかん移行リスク:** 痙攣重積状態は、脳にダメージを与え、てんかんを発症しやすくなる可能性があるんだ。",
-                            "**熱性けいれん重積と側頭葉てんかん:** 長時間の熱性けいれんは、特に側頭葉（海馬など）に影響を与えやすく、後に側頭葉てんかんを発症するリスクを高めると考えられているんだ。まるで、過去の嵐が未来の景色に影響を与えるようなものだね。"
+                            "**時間依存性:** けいれん重積状態の治療は、時間との戦いだ。発作が長引くほど脳へのダメージが蓄積し、後遺症のリスクが高まるんだ。",
+                            "**ゴールデンタイム:** 特にベンゾジアゼピン系の第一選択薬を5分以内に投与することは、発作を早期に終息させ、神経細胞の損傷を防ぐための「ゴールデンタイム」とされているんだ。"
                         ]
                     }
                 ]
@@ -406,23 +307,19 @@
         let level = 1;
         let incorrectAnswers = [];
         let shuffledQuestions = [];
-        let questionsOrder = [];
+        let questionsOrder = []; // 章の順序を管理
 
         const startGameBtn = document.getElementById('start-game-btn');
         const gameIntroDiv = document.getElementById('game-intro');
         const gameAreaDiv = document.getElementById('game-area');
-        const storyIntroDiv = document.getElementById('story-intro');
         const questionDisplayDiv = document.getElementById('question-display');
         const questionText = document.getElementById('question-text');
         const answerChoicesDiv = document.getElementById('answer-choices');
         const feedbackDisplayDiv = document.getElementById('feedback-display');
         const feedbackTitle = document.getElementById('feedback-title');
         const feedbackText = document.getElementById('feedback-text');
-        const supplementaryList = document.getElementById('supplementary-list');
+        const supplementaryList = document.getElementById('supplementary-list'); // 補足学習ポイントのリスト
         const nextQuestionBtn = document.getElementById('next-question-btn');
-        const characterDialogueDiv = document.getElementById('character-dialogue');
-        // const characterImage = document.getElementById('character-image'); // 削除
-        const characterText = document.getElementById('character-text');
         const progressBar = document.getElementById('progress-bar');
         const xpLevelDisplay = document.getElementById('xp-level');
         const gameEndDiv = document.getElementById('game-end');
@@ -440,7 +337,6 @@
 
         // XP thresholds for leveling up (example)
         const levelThresholds = [0, 50, 150, 300, 500, 800, 1200, 1700, 2300, 3000, 4000];
-        // 称号を研修医の成長段階に合わせる
         const titles = ["見習い研修医", "知識の探求者", "てんかん重積の森の歩き方", "真実を見抜く者", "セファルスの賢者"];
 
         // Badges (example)
@@ -459,25 +355,20 @@
             return array;
         }
 
-        // Function to get the current chapter's data
-        function getCurrentChapterData() {
-            let chapterIndex = Math.floor(currentQuestionIndex / 2); // Assuming 2 questions per chapter for now
-            if (chapterIndex >= gameData.length) chapterIndex = gameData.length - 1; // Prevent out of bounds
-             // Use the pre-shuffled order if available
-            return gameData[questionsOrder[chapterIndex]];
-        }
-
-        // Function to get the current question
+        // Function to get the current question based on shuffled order
         function getCurrentQuestion() {
-            const currentChapterData = getCurrentChapterData();
-            const chapterQuestions = currentChapterData.questions;
-            // Use the pre-shuffled order within the chapter if available
-            const chapterDataIndexInGameData = gameData.indexOf(currentChapterData);
-            const shuffledChapterQuestions = shuffledQuestions[questionsOrder.indexOf(chapterDataIndexInGameData)];
-            const questionInChapterIndex = currentQuestionIndex % 2; // Assuming 2 questions per chapter
-            return chapterQuestions[shuffledChapterQuestions[questionInChapterIndex]];
+            // shuffledQuestionsは、gameDataの全問題をフラットにした配列のインデックスをシャッフルしたもの
+            const flatQuestionIndex = shuffledQuestions[currentQuestionIndex];
+            let chapterAccumulatedQuestions = 0;
+            for (let i = 0; i < gameData.length; i++) {
+                const chapterQuestionsCount = gameData[i].questions.length;
+                if (flatQuestionIndex < chapterAccumulatedQuestions + chapterQuestionsCount) {
+                    return gameData[i].questions[flatQuestionIndex - chapterAccumulatedQuestions];
+                }
+                chapterAccumulatedQuestions += chapterQuestionsCount;
+            }
+            return null; // Should not happen if indices are correct
         }
-
 
         // Function to update XP and Level
         function updateXpAndLevel(gainedXp) {
@@ -513,14 +404,6 @@
                 return;
             }
 
-            const currentChapterData = getCurrentChapterData();
-            storyIntroDiv.innerHTML = `<p>${currentChapterData.story}</p>`;
-
-            // キャラクター画像は削除したので、テキストのみ表示
-            // characterImage.src = characterImages[currentChapterData.character]; // 削除
-            // characterImage.classList.remove('hidden'); // 削除
-            characterText.textContent = `${currentChapterData.character}：${currentChapterData.story.split('。')[currentChapterData.story.split('。').length - 2].trim()}。`; // ストーリーの最後の文をセリフとして表示
-
             questionText.textContent = question.text;
             answerChoicesDiv.innerHTML = ''; // Clear previous choices
 
@@ -528,7 +411,6 @@
             if (shuffleChoicesCheckbox.checked) {
                  choicesToDisplay = shuffleArray(choicesToDisplay);
             }
-
 
             choicesToDisplay.forEach(choice => {
                 const button = document.createElement('button');
@@ -541,6 +423,7 @@
             feedbackDisplayDiv.classList.add('hidden');
             questionDisplayDiv.classList.remove('hidden');
             nextQuestionBtn.classList.add('hidden');
+            updateProgressBar();
         }
 
         // Function to check the answer
@@ -566,39 +449,35 @@
             feedbackDisplayDiv.classList.remove('hidden');
             nextQuestionBtn.classList.remove('hidden');
 
-            // キャラクター画像は削除したので、テキストのみ表示
-            // characterImage.classList.add('hidden'); // 削除
-            characterText.textContent = '';
-
             if (isCorrect) {
                 score++;
                 updateXpAndLevel(10); // Award 10 XP for correct answer
-                feedbackTitle.textContent = "正解！素晴らしい！";
+                feedbackTitle.textContent = "正解！";
                 feedbackTitle.classList.remove('text-red-700');
                 feedbackTitle.classList.add('text-green-700');
-                feedbackText.textContent = `赤いサンショウウオ：よくやったね、たくちゃん！`;
-                supplementaryList.innerHTML = ''; // Clear previous supplementary points
+                feedbackText.textContent = `その通り！`;
             } else {
                 incorrectAnswers.push({
                     question: question.text,
                     yourAnswer: selectedChoice,
                     correctAnswer: question.answer,
-                    feedback: question.feedbackText,
-                    supplementary: question.supplementary
+                    feedback: question.feedbackText // feedbackTextをそのまま表示
                 });
                  updateXpAndLevel(5); // Award 5 XP for incorrect answer (partial learning)
-                feedbackTitle.textContent = question.feedbackTitle;
+                feedbackTitle.textContent = "残念...";
                  feedbackTitle.classList.remove('text-green-700');
                 feedbackTitle.classList.add('text-red-700');
-                feedbackText.textContent = question.feedbackText;
-                supplementaryList.innerHTML = ''; // Clear previous supplementary points
-                if (question.supplementary) { // Check if supplementary exists
-                     question.supplementary.forEach(point => {
-                        const li = document.createElement('li');
-                        li.innerHTML = point; // Use innerHTML to render bold/italics from markdown
-                        supplementaryList.appendChild(li);
-                    });
-                }
+                feedbackText.textContent = question.feedbackText; // 不正解時のフィードバックテキスト
+            }
+
+            // 正解・不正解に関わらず補足学習ポイントを表示
+            supplementaryList.innerHTML = ''; // Clear previous supplementary points
+            if (question.supplementary) { // Check if supplementary exists
+                question.supplementary.forEach(point => {
+                    const li = document.createElement('li');
+                    li.innerHTML = point; // Use innerHTML to render bold/italics from markdown
+                    supplementaryList.appendChild(li);
+                });
             }
         }
 
@@ -647,22 +526,16 @@
             // Display incorrect answers summary
             incorrectList.innerHTML = '';
             if (incorrectAnswers.length > 0) {
-                 weaknessFeedbackPara.textContent = `たくちゃん、君は${incorrectAnswers.length}問を間違えてしまったね。以下の問題を見直して、もっと強くなろう！`;
+                 weaknessFeedbackPara.textContent = `君は${incorrectAnswers.length}問を間違えてしまったね。以下の問題を見直して、もっと強くなろう！`;
                 incorrectAnswersSummaryDiv.classList.remove('hidden');
                 incorrectAnswers.forEach(item => {
                     const li = document.createElement('li');
                     li.innerHTML = `**問題:** ${item.question}<br>あなたの解答: ${item.yourAnswer}<br>正解: ${item.correctAnswer}<br>**解説:** ${item.feedback}`;
-                     if (item.supplementary && item.supplementary.length > 0) {
-                        li.innerHTML += '<br><em>補足学習ポイント:</em>';
-                        item.supplementary.forEach(sup => {
-                            li.innerHTML += `<br>- ${sup}`;
-                        });
-                     }
                     incorrectList.appendChild(li);
                 });
 
             } else {
-                 weaknessFeedbackPara.textContent = "たくちゃん、全問正解だ！素晴らしい！君は「てんかん重積の森」の真の賢者だね！";
+                 weaknessFeedbackPara.textContent = "全問正解だ！素晴らしい！君は「てんかん重積クイズ」のマスターだね！";
                  incorrectAnswersSummaryDiv.classList.remove('hidden'); // Still show the perfect score message
             }
         }
@@ -679,37 +552,35 @@
             gameIntroDiv.classList.add('hidden');
             gameEndDiv.classList.add('hidden');
             gameAreaDiv.classList.remove('hidden');
-             feedbackDisplayDiv.classList.add('hidden'); // Hide feedback at the start
+            feedbackDisplayDiv.classList.add('hidden'); // Hide feedback at the start
 
             updateXpAndLevel(0); // Initialize XP and Level display
             updateProgressBar(); // Initialize progress bar
 
-            // Prepare questions for the new game
-            if (shuffleQuestionsCheckbox.checked) {
-                // Shuffle the order of chapters first
-                questionsOrder = shuffleArray(Array.from({ length: gameData.length }, (_, i) => i));
-                // Then shuffle questions within each chapter and store the order
-                shuffledQuestions = questionsOrder.map(chapterIndex => {
-                    const chapterQuestions = gameData[chapterIndex].questions;
-                    return shuffleArray(Array.from({ length: chapterQuestions.length }, (_, i) => i));
+            // 全問題をフラットな配列として準備
+            let allQuestions = [];
+            gameData.forEach(chapter => {
+                chapter.questions.forEach((q, qIndex) => {
+                    allQuestions.push({ chapterIndex: gameData.indexOf(chapter), questionIndex: qIndex, questionData: q });
                 });
+            });
+
+            if (shuffleQuestionsCheckbox.checked) {
+                shuffledQuestions = shuffleArray(Array.from({ length: allQuestions.length }, (_, i) => i));
             } else {
-                 // Use original order
-                 questionsOrder = Array.from({ length: gameData.length }, (_, i) => i);
-                 shuffledQuestions = gameData.map(chapter => Array.from({ length: chapter.questions.length }, (_, i) => i));
+                shuffledQuestions = Array.from({ length: allQuestions.length }, (_, i) => i);
             }
 
+            // getCurrentQuestionが正しく動作するように、shuffledQuestionsはフラットなインデックスの配列とする
+            // getCurrentQuestion内で、そのインデックスがどのチャプターのどの問題に当たるかを計算する
+
             if (isReviewMode) {
-                 // Filter gameData to only include questions that were previously answered incorrectly
-                 // Note: This requires storing the original question objects or indices
-                 // For simplicity in this example, we'll just restart the full game for now.
-                 // A more robust review mode would need a different data structure.
                  alert("復習モードは現在開発中です。代わりに通常モードで再挑戦します。");
                  startNewGame(false); // Fallback to normal restart
                  return;
             }
 
-            displayQuestion(); // Display the first question
+            displayQuestion(); // Start with the first question
         }
 
 
